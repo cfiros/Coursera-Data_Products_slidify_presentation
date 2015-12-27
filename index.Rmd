@@ -1,0 +1,66 @@
+---
+title       : MPG Prediction
+subtitle    : Developing Data Products Course Project
+author      : Cfir Rahimi
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Fuel Efficiency
+
+Customers are very concscious with fuel efficiency, for various reasons:
+- rising cost of fuel
+- increasing concern for the environment
+
+It's important to be able to predict the fuel efficiency of new cars during the
+design stage. Many factors can effect the fuel efficiency, including:
+- number of cylinders
+- horsepower
+- weight
+- engine displacement
+- rear axle ratio
+- transmission type
+
+---
+
+## Using the mtcars dataset
+
+The ```mtcars``` dataset can be used to build a model of the effects of car 
+characteristics on fuel efficiency.  
+An example of the data is below:
+```{r, results="asis"}
+data(mtcars); library(xtable)
+print(xtable(mtcars[1:8,]), type = "html")
+```
+
+---
+
+## prediction model
+
+Using a linear model, I determined the effect of weight, number of 
+cylinders, and horsepower on fuel efficiency (mpg), and used this model to create a
+function to predict fuel efficiency based on these factors.
+```{r}
+fit <- lm(mpg ~ wt + cyl + hp, data=mtcars)
+fit$coefficients
+
+fitted_mpg <- function(wt, cyl, hp) {
+  fit$coefficients[1] + fit$coefficients[2] * wt + 
+    fit$coefficients[3] * cyl + fit$coefficients[4] * hp
+}
+```
+
+---
+
+## Comfortable App!!!
+
+![MPG Prediction App](./assets/img/shinyapp.png)
+
+The user inputs predictor values in the left sidebar, fuel effiency predictions
+are output to the main panel, and plots below the prediction show how the mpg
+compares with data from the mtcars dataset.
